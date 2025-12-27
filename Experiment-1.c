@@ -39,7 +39,7 @@ void display(Day *week, int size) {
 }
 
 int main() {
-    int size = 1;
+    int size = 7;
     Day *week = (Day *)malloc(size * sizeof(Day));
 
     read(week, size);
