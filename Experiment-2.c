@@ -1,40 +1,65 @@
 #include <stdio.h>
-#include <string.h>
 
-int main() {
-    char string[100], pat[20], rep[20];
-    char temp[100];
-    char *pos;
+void readString(char s[])
+{
+    int i = 0;
+    char ch;
+    while ((ch = getchar()) != '\n')
+        s[i++] = ch;
+    s[i] = '\0';
+}
 
-    printf("Enter the main string: ");
-    fgets(string, sizeof(string), stdin);
-    string[strcspn(string, "\n")] = '\0';
+void replacePattern(char str[], char pat[], char rep[])
+{
+    char res[100];
+    int i = 0, j = 0, k, found = 0;
+    int patLen = 0;
 
-    printf("Enter the pattern: ");
-    fgets(pat, sizeof(pat), stdin);
-    pat[strcspn(pat, "\n")] = '\0';
+    while (pat[patLen] != '\0')
+        patLen++;
 
-    printf("Enter the replace string: ");
-    fgets(rep, sizeof(rep), stdin);
-    rep[strcspn(rep, "\n")] = '\0';
+    while (str[i] != '\0')
+    {
+        k = 0;
 
-    pos = strstr(string, pat);
+        while (pat[k] != '\0' && str[i + k] == pat[k])
+            k++;
 
-    if (pos == NULL) {
-        printf("Pattern not found\n");
-        return 0;
+        if (pat[k] == '\0')
+        {
+            found = 1;
+            k = 0;
+            while (rep[k] != '\0')
+                res[j++] = rep[k++];
+            i += patLen;
+        }
+        else
+        {
+            res[j++] = str[i++];
+        }
     }
 
-    strncpy(temp, string, pos - string);
-    temp[pos - string] = '\0';
+    res[j] = '\0';
 
-    strcat(temp, rep);
+    if (found)
+        printf("Modified String: %s\n", res);
+    else
+        printf("Pattern not found\n");
+}
 
-    strcat(temp, pos + strlen(pat));
+int main()
+{
+    char STR[100], PAT[50], REP[50];
 
-    strcpy(string, temp);
+    printf("Enter main string: ");
+    readString(STR);
 
-    printf("Modified string: %s\n", string);
+    printf("Enter pattern: ");
+    readString(PAT);
 
+    printf("Enter replacement: ");
+    readString(REP);
+
+    replacePattern(STR, PAT, REP);
     return 0;
 }
